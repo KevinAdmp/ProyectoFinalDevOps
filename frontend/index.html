@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CKZ Suplements - Catálogo Minimalista</title>
+    <style>
+        /* TUS ESTILOS ORIGINALES (NO MODIFICADOS) */
+        :root {
+            --black: #121212;
+            --white: #ffffff;
+            --light-gray: #f5f5f5;
+            --medium-gray: #e0e0e0;
+            --dark-gray: #2d2d2d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-gray);
+            color: var(--black);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        
+        header {
+            background-color: var(--black);
+            color: var(--white);
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .user-actions a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .user-actions a:hover {
+            background-color: var(--dark-gray);
+        }
+        
+        .cart-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+        }
+        
+        .cart-count {
+            background-color: var(--white);
+            color: var(--black);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        .products-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .product-card {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 8px 8px 16px #d9d9d9, -8px -8px 16px #ffffff;
+            transition: transform 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-bg {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: calc(100% - 10px);
+            height: calc(100% - 10px);
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            border-radius: 10px;
+            overflow: hidden;
+            outline: 1px solid var(--medium-gray);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-blob {
+            position: absolute;
+            z-index: 1;
+            top: 50%;
+            left: 50%;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            opacity: 0.7;
+            filter: blur(20px);
+            animation: blob-bounce 8s infinite ease;
+        }
+        
+        @keyframes blob-bounce {
+            0% { transform: translate(-100%, -100%) translate3d(0, 0, 0); }
+            25% { transform: translate(-100%, -100%) translate3d(100%, 0, 0); }
+            50% { transform: translate(-100%, -100%) translate3d(100%, 100%, 0); }
+            75% { transform: translate(-100%, -100%) translate3d(0, 100%, 0); }
+            100% { transform: translate(-100%, -100%) translate3d(0, 0, 0); }
+        }
+        
+        .product-image {
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 3;
+        }
+        
+        .product-image img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+        
+        .product-image svg {
+            width: 60px;
+            height: 60px;
+            opacity: 0.15;
+        }
+        
+        .product-info {
+            position: relative;
+            z-index: 3;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-title {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--black);
+            font-weight: 600;
+        }
+        
+        .product-description {
+            color: #666;
+            margin-bottom: 0.8rem;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--black);
+        }
+        
+        .product-stock {
+            color: #333;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background-color: #f0f0f0;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .add-to-cart {
+            background-color: var(--black);
+            color: var(--white);
+            border: none;
+            padding: 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+            font-weight: 500;
+            width: 100%;
+            margin-top: 1rem;
+            position: relative;
+            z-index: 3;
+        }
+        
+        .add-to-cart:hover {
+            background-color: var(--dark-gray);
+        }
+        
+        .add-to-cart.added {
+            background-color: #333;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            header {
+                padding: 1rem;
+            }
+            
+            .products-container {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .product-card {
+                height: 280px;
+            }
+            
+            .product-bg {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">CKZ SUPPLEMENTS</div>
+        <div class="user-actions">
+            <a href="login.html">Login</a>
+            <a href="carrito.html" class="cart-btn">Carrito <span class="cart-count">0</span></a>
+        </div>
+    </header>
+    
+    <main class="products-container" id="productsContainer">
+        <!-- Los productos se cargarán dinámicamente aquí -->
+    </main>
+
+    <script>
+        // Función para cargar productos desde el backend
+        async function loadProducts() {
+            try {
+                const response = await fetch('http://localhost:5000/api/productos');
+                if (!response.ok) throw new Error('Error al cargar productos');
+                
+                const products = await response.json();
+                const container = document.getElementById('productsContainer');
+                container.innerHTML = '';
+                
+                products.forEach(product => {
+                    container.innerHTML += `
+                        <div class="product-card">
+                            <div class="product-blob"></div>
+                            <div class="product-bg">
+                                <div class="product-image">
+                                    ${product.imagen 
+                                        ? `<img src="${product.imagen}" alt="${product.nombre}">` 
+                                        : `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                          </svg>`
+                                    }
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-title">${product.nombre}</h3>
+                                    <p class="product-description">${product.descripcion || 'Descripción no disponible'}</p>
+                                    <div class="product-footer">
+                                        <span class="product-price">$${product.precio.toFixed(2)}</span>
+                                        <span class="product-stock">${product.stock}</span>
+                                    </div>
+                                    <button class="add-to-cart" onclick="addToCart(${product.id})">Añadir al carrito</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('productsContainer').innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">
+                        <p>No se pudieron cargar los productos. Por favor intenta más tarde.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Función para añadir al carrito
+        async function addToCart(productId) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/carrito', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ productId })
+                });
+                
+                if (response.ok) {
+                    updateCartCount();
+                    const button = event.target;
+                    button.classList.add('added');
+                    button.textContent = '✓ Añadido';
+                    setTimeout(() => {
+                        button.classList.remove('added');
+                        button.textContent = 'Añadir al carrito';
+                    }, 2000);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Actualizar contador del carrito
+        async function updateCartCount() {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/carrito', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const cartItems = await response.json();
+                    document.querySelector('.cart-count').textContent = cartItems.length;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Cargar productos al iniciar
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+            
+            // Verificar si hay sesión para actualizar carrito
+            if (localStorage.getItem('token')) {
+                updateCartCount();
+            }
+        });
+    </script>
+</body>
+</html>
